@@ -1,37 +1,57 @@
 <script setup>
 import Marquee from './components/MarqueeContent.vue'
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import { Vue3Lottie } from 'vue3-lottie'
 import loadingJSON from '@/assets/loading.json'
 
-const getImageUrl = (path) => {
-  return new URL(path, import.meta.url).href
-}
-
 const isLoading = ref(true)
 const value = ref(100)
+
+const getImageUrl = (pathName) => {
+  return new URL(`./assets/img/${pathName}.png`, import.meta.url).href
+}
+
 const news = reactive([
   {
-    src: '@/assets/img/news1.png',
+    src: 'news1',
     date: '2023/12/24',
     title: '掃街模式開啟！帶著你的貓耳，來和我一起走！',
     content: '街上氣氛真的很棒，從小孩到大人，甚至有些狗狗朋友都帶著貓耳來找我握手，真的太可愛了！'
   },
   {
-    src: './assets/img/news2.png',
+    src: 'news2',
     date: '2023/12/20',
     title: '收容所模特兒大比拼！',
     content:
       '今天的收容所不再是一片寂靜。為了讓更多人認識到這裡的毛孩子，我們舉辦了一場前所未有的「模特兒走秀」！'
   },
   {
-    src: './assets/img/news3.png',
+    src: 'news3',
     date: '2023/12/26',
     title: '參與台北寵物論壇，爭取貓咪友善環境',
     content:
       '炎炎夏日的周六，我走進了台北寵物論壇，帶著一副貓耳髮箍，決定要全力宣傳「貓咪至上」的理念！'
   }
 ])
+
+const policy = reactive([
+  {
+    src: 'policy1',
+    content: '為毛孩子謀福利! 推動寵物醫療保障方案'
+  },
+  {
+    src: 'policy2',
+    content: '打造休閒天堂! 推廣寵物休閒與娛樂場所'
+  },
+  {
+    src: 'policy3',
+    content: '推廣寵物飼養教育，讓愛更加專業'
+  }
+])
+
+const policyImageComputed = (index) => {
+  return index === 1 ? true : false
+}
 
 onMounted(() => {
   setTimeout(() => {
@@ -92,14 +112,12 @@ onMounted(() => {
           <Marquee />
         </section>
 
-        <section class="bg-[#F7ECE1] h-[752px] flex items-center justify-center">
-          <div class="bg-white w-[1320px] flex justify-between rounded-t-3xl">
+        <section class="bg-[#F7ECE1] flex items-center justify-center">
+          <div class="bg-white h-full flex justify-between rounded-t-3xl max-w-[1320px]">
             <div
               class="w-[calc(50%-12px)] h-full flex justify-center items-center flex-col px-10 py-16"
             >
-              <span class="bg-[#334155] text-white rounded-lg text-[16px] px-3 py-2 font-bold">
-                ADVOCATE
-              </span>
+              <span class="section_title"> ADVOCATE </span>
               <h1 class="text-[64px] mb-8">候選人主張</h1>
               <p class="font-bold text-[28px] text-[#334155] mb-8">
                 我堅信 ! 藉由推動更完善的<span class="text-[#DA7D4A]">貓咪福利</span
@@ -112,18 +130,16 @@ onMounted(() => {
               </p>
             </div>
             <div
-              class="h-full w-[calc(50%-12px)] bg-no-repeat bg-[url('./assets/img/image_8.svg')] bg-center bg-cover"
+              class="w-[calc(50%-12px)] bg-no-repeat bg-[url('./assets/img/image_8.svg')] bg-center bg-cover"
             ></div>
           </div>
         </section>
 
-        <section class="h-[943px] flex justify-center items-center flex-col">
-          <span class="bg-[#334155] text-white px-4 py-3 rounded-2xl mr-4 text-[28px]"
-            >LATEST EVENTS</span
-          >
+        <section class="flex justify-center items-center flex-col">
+          <span class="section_title">LATEST EVENTS</span>
           <h1 class="text-[64px] mb-16">最新活動</h1>
 
-          <div class="flex w-[1320px]">
+          <div class="flex justify-between w-[1320px]">
             <div class="w-[calc(50%-12px)]">
               <img class="w-full" src="@/assets/img/news3.png" alt="news3" />
               <span>2023/12/26</span>
@@ -134,15 +150,63 @@ onMounted(() => {
               </p>
             </div>
             <div class="w-[calc(50%-12px)]">
-              <div class="flex" v-for="(item, index) in news" :key="index">
-                <img class="w-full" :src="item.src" alt="logo" />
+              <div class="flex mb-6" v-for="(item, index) in news" :key="index">
+                <img class="h-full mr-4" :src="getImageUrl(item.src)" alt="logo" />
                 <div class="flex flex-col">
-                  <span>{{ item.date }}</span>
-                  <h2>{{ item.title }}</h2>
-                  <p>{{ item.content }}</p>
+                  <span class="text-[14px] text-[#64748B]">{{ item.date }}</span>
+                  <h2 class="font-bold text-[#334155]">{{ item.title }}</h2>
+                  <p class="text-[#334155]">{{ item.content }}</p>
                 </div>
               </div>
+              <button
+                class="bg-[#F1F5F9] rounded-[500px] font-semibold px-6 py-4 flex items-center justify-center"
+              >
+                查看更多
+                <span class="arrow ml-2"></span>
+              </button>
             </div>
+          </div>
+        </section>
+
+        <section class="flex justify-center items-center flex-col">
+          <span class="section_title">POLICY ISSUES</span>
+          <h1 class="text-[64px] mb-16">政策議題</h1>
+
+          <div class="flex w-[1320px] justify-between">
+            <div v-for="(item, index) in policy" :key="index">
+              <div class="h-[25%] mb-4">
+                <div
+                  v-for="(sentence, idx) in item.content.split('!')"
+                  :key="idx"
+                  class="text-[#334155] text-2xl font-bold"
+                >
+                  {{ sentence }}
+                </div>
+              </div>
+              <img :src="getImageUrl(item.src)" :alt="'policy' + index" />
+            </div>
+          </div>
+        </section>
+
+        <section class="flex justify-center items-center flex-col">
+          <div class="flex w-[1320px] h-[596px] justify-between">
+            <div class="section_card bg-[#DA7D4A]">
+              <div>
+                <p>{{ '小額支持喵喵' }}</p>
+                <span>{{ '您的小筆捐款，是每隻毛孩未來的大大動力！' }}</span>
+              </div>
+
+              <div>
+                <button
+                  class="bg-[#F1F5F9] rounded-[500px] font-semibold px-6 py-4 flex items-center justify-center"
+                >
+                  {{ '小額捐款' }}
+                  <span class="arrow ml-2"></span>
+                </button>
+                <img src="" alt="" />
+              </div>
+            </div>
+            <div class="section_card bg-[#334155]"></div>
           </div>
         </section>
       </main>
@@ -159,6 +223,10 @@ h1 {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[#E5793B] to-[#FF4185];
 }
 
+section {
+  @apply py-[104px];
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 1s ease;
@@ -167,5 +235,21 @@ h1 {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0px 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-45deg);
+}
+
+.section_title {
+  @apply bg-[#334155] text-white rounded-lg text-[16px] px-3 py-2 font-bold;
+}
+
+.section_card {
+  @apply w-[calc(50%-12px)] h-full rounded-[32px] p-24;
 }
 </style>
